@@ -5,7 +5,7 @@
             <div class="card">
                 <div class="card-header">
                     <div class="d-flex align-content-center justify-content-between">
-                        <h3 class="font-weight-bold text-xl">Data Customer</h3>
+                        <h3 class="font-weight-bold text-xl">Data Vendors</h3>
                         <div class="d-flex align-items-center">
                             {{-- @if (isset($permissions['tambah']) && $permissions['tambah'] == 1)
                                 <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#modalForm">
@@ -16,7 +16,7 @@
 
                             <button class="btn btn-primary btn-sm" data-bs-toggle="modal" id="btnTambah"
                                 data-bs-target="#modalForm">
-                                <i class="bi bi-plus-lg"></i> Tambah Customer
+                                <i class="bi bi-plus-lg"></i> Tambah Vendors
                             </button>
 
                         </div>
@@ -67,10 +67,10 @@
 
 
                             <div class="form-group row mb-3">
-                                <label for="name" class="col-sm-4 col-form-label">Nama Customer</label>
+                                <label for="name" class="col-sm-4 col-form-label">Nama Vendor</label>
                                 <div class="col-sm-8">
                                     <input type="text" class="form-control" id="name" name="name"
-                                        placeholder="Masukkan nama customer">
+                                        placeholder="Masukkan nama Vendor">
                                 </div>
                             </div>
 
@@ -123,7 +123,7 @@
             serverSide: true,
             responsive: true,
             ordering: false,
-            ajax: "{{ route('customers.index') }}",
+            ajax: "{{ route('vendors.index') }}",
             columns: [{
                     data: 'DT_RowIndex',
                     name: 'DT_RowIndex',
@@ -179,10 +179,10 @@
 
         let url, method;
         if (primaryId) {
-            url = "{{ route('customers.update', ':id') }}".replace(':id', primaryId);
+            url = "{{ route('vendors.update', ':id') }}".replace(':id', primaryId);
             method = 'PUT';
         } else {
-            url = "{{ route('customers.store') }}";
+            url = "{{ route('vendors.store') }}";
             method = 'POST';
         }
 
@@ -201,8 +201,8 @@
             success: function(response) {
                 audio.play()
                 let msg = primaryId ?
-                    "Data Customer berhasil diperbarui" :
-                    "Data Customer berhasil ditambahkan";
+                    "Data Vendor berhasil diperbarui" :
+                    "Data Vendor berhasil ditambahkan";
                 toastr.success(msg, "BERHASIL", {
                     progressBar: true,
                     timeOut: 3500,
@@ -265,7 +265,7 @@
                 $('#email').val(response.data.email);
 
                 $('#modalForm').modal('show');
-                $('#modalFormLabel').text("Edit Customer");
+                $('#modalFormLabel').text("Edit Vendor");
                 $('.button-text').text("Update");
             }
         });
@@ -278,7 +278,7 @@
 
         Swal.fire({
             title: 'Yakin hapus?',
-            text: 'Data Customer akan dihapus permanen.',
+            text: 'Data Vendor akan dihapus permanen.',
             icon: 'warning',
             showCancelButton: true,
             confirmButtonText: 'Ya, hapus',
@@ -326,7 +326,7 @@
         btnText.text('Simpan');
         submitBtn.prop('disabled', false);
 
-        $('#modalFormLabel').text('Tambah Customer');
+        $('#modalFormLabel').text('Tambah Vendor');
     });
 </script>
 @endpush

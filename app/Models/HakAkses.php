@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class HakAkses extends Model
 {
     use HasFactory;
-
+    public $timestamps = false;
     protected $table = 'hak_akses';
     
     protected $fillable = [
@@ -24,5 +24,12 @@ class HakAkses extends Model
     public function menu()
     {
         return $this->belongsTo(Menu::class, 'id_menu');
+    }
+
+   
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'id_user');
     }
 }

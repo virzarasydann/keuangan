@@ -2,33 +2,33 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Customer;
+use App\Models\Vendor;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 
-class CustomerController extends Controller
+class VendorController extends Controller
 {
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $data = Customer::query();
+            $data = Vendor::query();
 
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function ($row) {
-                    $editUrl = route('customers.edit', $row->id);
-                    $deleteUrl = route('customers.destroy', $row->id);
-                    
+                    $editUrl = route('vendors.edit', $row->id);
+                    $deleteUrl = route('vendors.destroy', $row->id);
+
                     $btn = '<button class="btn btn-sm btn-warning editBtn" data-url="'.$editUrl.'">Edit</button> ';
                     $btn .= '<button class="btn btn-sm btn-danger deleteBtn" data-url="'.$deleteUrl.'">Hapus</button>';
-                    
+
                     return $btn;
                 })
                 ->rawColumns(['action'])
                 ->make(true);
         }
 
-        return view('admin.customer.index');
+        return view('admin.vendors.index');
     }
 
     public function store(Request $request)
@@ -50,12 +50,7 @@ class CustomerController extends Controller
         ]);
 
         try {
-            Customer::create([
-                'name' => $validatedData['name'],
-                'address' => $validatedData['address'] ?? null,
-                'phone' => $validatedData['phone'] ?? null,
-                'email' => $validatedData['email'] ?? null,
-            ]);
+            Vendor::create($validatedData);
 
             return response()->json(['status' => 'success']);
         } catch (\Exception $e) {
@@ -66,11 +61,11 @@ class CustomerController extends Controller
     public function edit($id)
     {
         try {
-            $customer = Customer::findOrFail($id);
+            $vendor = Vendor::findOrFail($id);
 
             return response()->json([
                 'status' => 'success',
-                'data' => $customer
+                'data' => $vendor
             ]);
         } catch (\Exception $e) {
             return response()->json(['status' => 'error', 'msg' => $e->getMessage()]);
@@ -85,22 +80,13 @@ class CustomerController extends Controller
             'phone' => 'nullable|string|max:30',
             'email' => 'nullable|email|max:150',
         ], [
-            'name.required' => 'Nama customer wajib diisi.',
-            'name.max' => 'Nama customer maksimal 150 karakter.',
-            'phone.max' => 'Nomor telepon maksimal 30 karakter.',
+            'name.required' => 'Nama vendor wajib diisi.',
             'email.email' => 'Format email tidak valid.',
-            'email.max' => 'Email maksimal 150 karakter.',
         ]);
 
         try {
-            $customer = Customer::findOrFail($id);
-
-            $customer->update([
-                'name' => $validatedData['name'],
-                'address' => $validatedData['address'] ?? null,
-                'phone' => $validatedData['phone'] ?? null,
-                'email' => $validatedData['email'] ?? null,
-            ]);
+            $vendor = Vendor::findOrFail($id);
+            $vendor->update($validatedData);
 
             return response()->json(['status' => 'success']);
         } catch (\Exception $e) {
@@ -111,8 +97,8 @@ class CustomerController extends Controller
     public function destroy($id)
     {
         try {
-            $customer = Customer::findOrFail($id);
-            $customer->delete();
+            $vendor = Vendor::findOrFail($id);
+            $vendor->delete();
 
             return response()->json(['status' => 'success']);
         } catch (\Exception $e) {

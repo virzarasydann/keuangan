@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Menu extends Model
 {
     use HasFactory;
+    public $timestamps = false;
     protected $table = 'menu';
     protected $fillable = [
         'id_parent',
@@ -24,5 +25,15 @@ class Menu extends Model
     public function children()
     {
         return $this->hasMany(Menu::class, 'id_parent', 'id')->orderBy('urutan');
+    }
+
+    public function parent()
+    {
+        return $this->belongsTo(Menu::class, 'id_parent');
+    }
+
+    public function hakAkses()
+    {
+        return $this->hasMany(HakAkses::class, 'id_menu');
     }
 }

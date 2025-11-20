@@ -11,7 +11,7 @@ class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
-
+    public $timestamps = false;
     /**
      * The attributes that are mass assignable.
      *
@@ -43,5 +43,23 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function hakAkses()
+    {
+        return $this->hasMany(HakAkses::class, 'id_user');
+    }
+
+    // Method untuk mendapatkan menu yang boleh diakses
+    public function menus()
+    {
+        return $this->hasManyThrough(
+            Menu::class,
+            HakAkses::class,
+            'id_user', // Foreign key pada HakAkses
+            'id', // Foreign key pada Menu  
+            'id', // Local key pada User
+            'id_menu' // Local key pada HakAkses
+        )->where('hak_akses.lihat', 1);
     }
 }
